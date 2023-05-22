@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookstore Homepage</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Bookstore</a>
+      <div class="navbar-right ml-auto">
+        <a href="/signup" class="btn btn-primary">Sign Up</a>
+        <a href="/login" class="btn btn-secondary">Login</a>
+      </div>
+    </nav>
+
+    <h1>Welcome to the Bookstore</h1>
+
+    <h2>List of Books</h2>
+    <ul class="list-group">
+      <li class="list-group-item">
+        Book 1
+        <button class="add-btn">Add</button>
+      </li>
+      <li class="list-group-item">
+        Book 2
+        <button class="add-btn">Add</button>
+      </li>
+      <li class="list-group-item">
+        Book 3
+        <button class="add-btn">Add</button>
+      </li>
+      <!-- Add more books here -->
+    </ul>
+  </div>
+
+  <!-- Bootstrap JS (optional if you need JavaScript functionality) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Function to handle the click event of the "Add" button
+    function handleAddButtonClick(event) {
+      const addButton = event.target;
+      const bookName = addButton.parentElement.innerText.trim();
+      
+      // Disable the button and change its text to "Added"
+      addButton.disabled = true;
+      addButton.textContent = 'Added';
+
+      // Send a request to add the book and update the user page
+      fetch('/user/add-book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ bookName })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    // Add event listeners to all "Add" buttons
+    const addButtons = document.getElementsByClassName('add-btn');
+    Array.from(addButtons).forEach(button => {
+      button.addEventListener('click', handleAddButtonClick);
+    });
+  </script>
+</body>
+</html>
